@@ -1,0 +1,18 @@
+;; shadow-cljs configuration
+{:source-paths
+ ["src"
+  "test"]
+
+ :dependencies
+ [[re-frame "1.4.3"]
+  [reagent "1.3.0"]]
+
+ :builds
+ {:app
+  {:target :browser
+   :output-dir "public/js"
+   :asset-path "/js"
+   :modules {:main {:init-fn last-best-loaf.main/init}}
+   :devtools {:after-load last-best-loaf.main/start}}}
+
+ :dev-http {8000 "public"}}
