@@ -7,8 +7,10 @@
 (def routes
   ["/"
    ["" {:name :menu}]
+   ["about" {:name :about}]
    ["cart" {:name :cart}]
-   ["checkout" {:name :checkout}]])
+   ["checkout" {:name :checkout}]
+   ["contact" {:name :contact}]])
 
 (def router
   (rf/router routes))

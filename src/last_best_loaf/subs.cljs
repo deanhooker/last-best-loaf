@@ -38,3 +38,14 @@
  :customer
  (fn [db _]
    (:customer db)))
+
+(rf/reg-sub
+ :errors
+ (fn [db _]
+   (get-in db [:ui :errors])))
+
+(rf/reg-sub
+ :valid?
+ :<- [:errors]
+ (fn [errors _]
+   (empty? errors)))

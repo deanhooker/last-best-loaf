@@ -2,7 +2,8 @@
   (:require
    [re-frame.core :as rf]
    [reitit.frontend.easy :as rfe]
-   [last-best-loaf.db :as db]))
+   [last-best-loaf.db :as db]
+   [last-best-loaf.validation :as v]))
 
 (rf/reg-event-db
  :initialize-db
@@ -50,3 +51,11 @@
  :customer/set
  (fn [db [_ k v]]
    (assoc-in db [:customer k] v)))
+
+(rf/reg-event-db
+ :validate-checkout
+ (fn [db _]
+   (let [errors (v/validate
+                 {:checkout (:checkout db)
+                  :customer (:customer db)})]
+     (assoc-in db [:ui :errors] errors))))
