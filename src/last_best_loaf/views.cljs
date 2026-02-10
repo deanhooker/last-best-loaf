@@ -127,6 +127,13 @@
   (let [items @(rf/subscribe [:catalog/items])]
     [:div
      [:h2 "Menu"]
+     [:div 
+      [:p [:strong "Community Loaves:"]]
+      [:p "We believe good bread should be accessible."]
+      [:p "Last Best Loaf Bakery is built on small batches, long fermentation, and care for our neighbors. 
+    For every full-price loaf purchased, one Community Loaf becomes available at a reduced price - offered on the honor system.
+    Good bread should be rooted in place and shared at the table. This is our way of doing both. 
+    "]]
      (for [item items]
        ^{:key (:id item)}
        [menu-item item])
@@ -287,14 +294,14 @@
   [:div {:style {:flex "1 1 380px"
                  :line-height "1.6"}}
 
-   [:p "The Last Best Bakery"]
+   [:p "The Last Best Loaf Bakery"]
    [:p "3100 Technology Blvd W, Apt 301"]
    [:p "Bozeman, MT 59718 USA"]
    [:p "Questions? Call us or send us a DM on Instagram or Facebook"]
    [:p
     [:strong "Phone: "] "(610) 730-1579"]
    [:p
-    [:strong "Instagram: "] "@lastbestbakery"]
+    [:strong "Instagram: "] "@lastbestloafbakery"]
    [:p
     [:strong "Email: "]
     [:a {:href "mailto:thelastbestloafbakery@gmail.com"}
@@ -331,7 +338,7 @@
     ;; Left: address
     [:div {:style {:flex "1 1 240px"}}
      [:div {:style {:font-weight "bold" :margin-bottom "0.5rem"}}
-      "The Last Best Bakery"]
+      "The Last Best Loaf Bakery"]
      [:div "3100 Technology Blvd W, Apt 301"]
      [:div "Bozeman, MT"]]
 
@@ -351,7 +358,7 @@
      [:div {:style {:font-weight "bold" :margin-bottom "0.5rem"}}
       "Follow"]
      [:div "Instagram: @lastbestbakery"]
-     [:div "Facebook: The Last Best Bakery"]]]])
+     [:div "Facebook: The Last Best Loaf Bakery"]]]])
 
 (defn root []
   (let [route @(rf/subscribe [:route-name])]
