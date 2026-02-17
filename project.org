@@ -1,0 +1,83 @@
+#+TITLE: Last Best Loaf Bakery
+
+* Summary
+A website in which customers can order bakery products and learn more about the bakery.
+
+* Customer Experience
+** Navigation
+Allows the user to navigate to different pages, including the shopping cart.
+** Menu
+Displays all items available for order, showing available stock if applicable. User is able to add items to their cart.
+** Cart
+User is able to see the items in their cart, edit the quantities of items in their cart, and delete items from their cart. Total price is shown. The user can proceed to the Order page if their cart contains items.
+** Checkout
+User is able to provide contact information, pick up time / delivery address. They are able to see their order summary. Once all required information is provided and validated (e.g. valid address, phone number, etc.) they are able to place their order. If order is successful they are navigated to the confirmation page.
+** Confirmation
+Once the order has been successfully communicated to the server the user will be provided an order confirmation message, including an order number.
+** Contact
+User should be easily able to find contact phone number, address, and email.
+** About
+User should be able to read about the Last Best Loaf Bakery, including the Community Loaf initiative.
+
+* Business Rules
+** Inventory constraints
+Items can never be ordered when out of stock. The client inventory can be out of sync with the back end but an order cannot be successfully placed unless the backend agrees that all items in an order are in stock.
+** Delivery radius
+Use google maps to ensure delivery address is within N miles of bakery address.
+** Cutoff times
+Each bake day has a window in which orders can be placed.
+** Order status lifecycle
+e.g. received, confirmed, ready, completed, cancelled
+
+* Backend System
+** Order idempotency
+Receiving the same order multiple times results in only a single order being placed.
+** Order persistence
+Orders are persisted durably before the customer sees a confirmation message or a confirmation email.
+** Notification reliability
+Confirmation emails are sent asynchronously. Failures are retried N times, logged, and visible in monitoring.
+** Inventory concurrency
+Inventory updates are atomic. Concurrent orders cannot oversell stock. If an order fails, the customer will receive a message that an item is out of stock. They can then modify their cart and try again.
+** Admin view
+Can view each order and total count of each product ordered.
+
+* Infrastructure
+** Hosting
+** Database
+** Security
+** Monitoring / logging
+** Environments
+Dev, Prod
+** Backups
+Database backups are performed automatically.
+** SEO
+
+* Compliance
+** Privacy
+(e.g. email collection)
+** Terms
+** Data retention
+Orders are retained for business records.
+Customer data is not shared or sold.
+
+* Order Data Model
+- id
+- created-at
+- status
+- payment-status
+- customer
+  - name
+  - email
+  - phone
+- fulfillment
+  - type (pickup | delivery)
+  - address
+  - pickup-time
+- items
+  - item-id
+  - quantity
+  - price-at-time
+- subtotal
+- delivery-fee
+- total
+- notes
