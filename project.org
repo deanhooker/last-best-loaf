@@ -81,3 +81,15 @@ Customer data is not shared or sold.
 - delivery-fee
 - total
 - notes
+
+* Bake Day Data Model
+- id
+- pick up date
+  - orders allowed up to 3 day before
+- items
+  - price
+  - quantity
+
+* Server APIs
+** Create Bake Day - secure
+** Order

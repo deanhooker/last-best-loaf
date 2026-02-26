@@ -8,6 +8,5 @@ if podman pod exists $POD_NAME; then
 else
   podman pod create \
     --name $POD_NAME \
-    -p 5432:5432 \
-    -p 3000:3000
+    -p 5432:5432
 fi
