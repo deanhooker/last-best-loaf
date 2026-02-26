@@ -38,6 +38,8 @@ Best eaten in large quantities"}}}
     :email ""
     :phone ""}
 
+   :bake-days nil
+
    :ui
    {:errors {}
     :submitting? false}

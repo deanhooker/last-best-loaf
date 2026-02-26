@@ -40,6 +40,11 @@
    (:customer db)))
 
 (rf/reg-sub
+ :bake-days
+ (fn [db _]
+   (:bake-days db)))
+
+(rf/reg-sub
  :errors
  (fn [db _]
    (get-in db [:ui :errors])))

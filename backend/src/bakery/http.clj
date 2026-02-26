@@ -2,19 +2,15 @@
   (:require
    [bakery.db :as db]
    [reitit.ring :as ring]
-   [ring.util.response :as res]))
-
-;; TODO: Stubbed for now
-(defn get-scheduled-bakes []
-  {:day1 {:date "2026-02-28"
-          :items {:bagels {:qty 2 :price 12}}}})
+   [ring.util.response :as res]
+   [ring.middleware.cors :refer [wrap-cors]]))
 
 (defn ping [_]
   (res/response "pong"))
 
-;; TODO: Responses should be JSON
 (defn scheduled-bakes [_]
-  (res/response (str (get-scheduled-bakes))))
+  (-> (res/response (pr-str db/bakes-stub))
+      (res/content-type "application/edn")))
 
 ;; TODO: Move to db ns
 (defn db-ok? []
@@ -22,7 +18,7 @@
     (db/test-connection)
     true
     (catch Exception _
-          false)))
+      false)))
 
 (defn health [_]
   (let [db (db-ok?)]
@@ -35,7 +31,10 @@
   (ring/router
    [["/ping" {:get ping}]
     ["/health" {:get health}]
-    ["/bakes" {:get scheduled-bakes}]]))
+    ["/api/bakes" {:get scheduled-bakes}]]))
 
 (def app
-  (ring/ring-handler router))
+  (wrap-cors (ring/ring-handler router)
+             :access-control-allow-origin [#"http://localhost:8000"]
+             :access-control-allow-methods [:get :post :put :delete]
+             :access-control-allow-headers ["Content-Type"]))

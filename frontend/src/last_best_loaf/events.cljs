@@ -3,6 +3,7 @@
    [re-frame.core :as rf]
    [reitit.frontend.easy :as rfe]
    [last-best-loaf.db :as db]
+   [last-best-loaf.http :refer [fetch-edn]]
    [last-best-loaf.validation :as v]))
 
 (rf/reg-event-db
@@ -59,3 +60,21 @@
                  {:checkout (:checkout db)
                   :customer (:customer db)})]
      (assoc-in db [:ui :errors] errors))))
+
+(rf/reg-event-fx
+ :load-bake-days
+ (fn [_ _]
+   {:fetch-bake-days {:on-success #(rf/dispatch [:set-bake-days %])
+                      :on-failure #(js/console.error "Failed to fetch bake-days:" %)}}))
+
+(rf/reg-fx
+ :fetch-bake-days
+ (fn [{:keys [on-success on-failure]}]
+   (-> (fetch-edn "http://localhost:3000/api/bakes")
+       (.then on-success)
+       (.catch on-failure))))
+
+(rf/reg-event-db
+ :set-bake-days
+ (fn [db [_ response]]
+   (assoc db :bake-days response)))
