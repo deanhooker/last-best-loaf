@@ -1,7 +1,8 @@
 ;; shadow-cljs configuration
 {:source-paths
  ["src"
-  "test"]
+  "test"
+  "../shared/src"]
 
  :dependencies
  [[metosin/reitit-frontend "0.10.0"]

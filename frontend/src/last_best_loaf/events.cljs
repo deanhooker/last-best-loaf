@@ -3,7 +3,7 @@
    [re-frame.core :as rf]
    [reitit.frontend.easy :as rfe]
    [last-best-loaf.db :as db]
-   [last-best-loaf.http :refer [fetch-edn]]
+   [last-best-loaf.http :refer [fetch-edn fetch-json]]
    [last-best-loaf.validation :as v]))
 
 (rf/reg-event-db
@@ -62,19 +62,19 @@
      (assoc-in db [:ui :errors] errors))))
 
 (rf/reg-event-fx
- :load-bake-days
+ :load-products
  (fn [_ _]
-   {:fetch-bake-days {:on-success #(rf/dispatch [:set-bake-days %])
-                      :on-failure #(js/console.error "Failed to fetch bake-days:" %)}}))
+   {:fetch-products {:on-success #(rf/dispatch [:set-products %])
+                     :on-failure #(js/console.error "Failed to fetch products:" %)}}))
 
 (rf/reg-fx
- :fetch-bake-days
+ :fetch-products
  (fn [{:keys [on-success on-failure]}]
-   (-> (fetch-edn "http://localhost:3000/api/bakes")
+   (-> (fetch-json "http://localhost:3000/api/products")
        (.then on-success)
        (.catch on-failure))))
 
 (rf/reg-event-db
- :set-bake-days
+ :set-products
  (fn [db [_ response]]
-   (assoc db :bake-days response)))
+   (assoc db :products response)))

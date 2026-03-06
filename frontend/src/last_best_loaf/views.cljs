@@ -101,7 +101,7 @@
       footer])])
 
 
-(defn menu-item [{:keys [id name price description]}]
+(defn menu-item [{:keys [id name price_cents description]}]
   [:div {:style {:border "1px solid #eee"
                  :border-radius "8px"
                  :padding "1rem"
@@ -112,7 +112,7 @@
    [:p {:style {:color "#555"
                 :margin "0.5rem 0 1rem"}}
     description]
-   [:strong (str "$" price)]
+   [:strong (str "$" price_cents)]
    [:div
     [:button
      {:style {:padding "0.5rem 0.75rem"
@@ -124,25 +124,23 @@
      "Add to cart"]]])
 
 (defn menu []
-  (r/with-let [_ (rf/dispatch [:load-bake-days])]
-    (let [items @(rf/subscribe [:catalog/items])
-                     bake-days @(rf/subscribe [:bake-days])]
-           [:div
-            [:h2 "Menu"]
-            [:div 
-             [:p [:strong "Community Loaves:"]]
-             [:p "We believe good bread should be accessible."]
-             [:p "Last Best Loaf Bakery is built on small batches, long fermentation, and care for our neighbors. 
+  (r/with-let [_ (rf/dispatch [:load-products])]
+    (let [products @(rf/subscribe [:products])]
+      [:div
+       [:h2 "Menu"]
+       [:div
+        [:p [:strong "Community Loaves:"]]
+        [:p "We believe good bread should be accessible."]
+        [:p "Last Best Loaf Bakery is built on small batches, long fermentation, and care for our neighbors. 
     For every full-price loaf purchased, one Community Loaf becomes available at a reduced price - offered on the honor system.
     Good bread should be rooted in place and shared at the table. This is our way of doing both. 
     "]]
-            (for [item items]
-              ^{:key (:id item)}
-              [menu-item item])
-            [:div (str bake-days)]
-            [:button
-             {:on-click #(rf/dispatch [:navigate! :cart])}
-             "View Cart"]])))
+       (for [product products]
+         ^{:key (:name product)}
+         [menu-item product])
+       [:button
+        {:on-click #(rf/dispatch [:navigate! :cart])}
+        "View Cart"]])))
 
 (defn cart-summary []
   (let [count @(rf/subscribe [:cart/count])]

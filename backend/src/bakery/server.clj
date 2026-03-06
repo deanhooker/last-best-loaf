@@ -5,23 +5,19 @@
 
 (defonce server (atom nil))
 
-(defn start []
+(defn start! []
   (if-not @server
     (do (reset! server
                 (jetty/run-jetty #'http/app
                               {:port 3000
                                :join? false}))
-      :started)
-    :already-running))
+      (println "Started server"))
+    (println "Server already running")))
 
-(defn stop []
+(defn stop! []
   (if-let [s @server]
     (do
       (.stop s)
       (reset! server nil)
-      :stopped)
-    :no-server-running))
-
-(defn restart []
-  (stop)
-  (start))
+      (println "Stopped server"))
+    (println "No server running")))

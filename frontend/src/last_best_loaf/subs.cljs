@@ -14,11 +14,6 @@
    (get-in route [:data :name])))
 
 (rf/reg-sub
- :catalog/items
- (fn [db _]
-   (vals (get-in db [:catalog :items]))))
-
-(rf/reg-sub
  :cart/items
  (fn [db _]
    (get-in db [:cart :items])))
@@ -43,6 +38,11 @@
  :bake-days
  (fn [db _]
    (:bake-days db)))
+
+(rf/reg-sub
+ :products
+ (fn [db _]
+   (:products db)))
 
 (rf/reg-sub
  :errors

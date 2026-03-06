@@ -1,17 +1,16 @@
 (ns bakery.db
   (:require
-   [next.jdbc :as jdbc])
-  (:import
-   [com.zaxxer.hikari HikariDataSource]))
+   [next.jdbc :as jdbc]))
 
-(defonce ds
-  (doto (HikariDataSource.)
-    (.setJdbcUrl "jdbc:postgresql://localhost:5432/bakery")
-    (.setUsername "bakery")
-    (.setPassword "bakery")))
+(defonce datasource
+  (jdbc/get-datasource
+   {:dbtype "postgresql"
+    :dbname "bakery"
+    :user "bakery"
+    :password "bakery"}))
 
 (defn test-connection []
-  (jdbc/execute! ds ["select 1"]))
+  (jdbc/execute! datasource ["select 1"]))
 
 (def bakes-stub
   [{:id #uuid "6bdf4f2b-b551-4d61-a3cd-b46b2a401407"
