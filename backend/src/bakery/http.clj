@@ -15,7 +15,9 @@
       (res/content-type "application/edn")))
 
 (defn products [_]
-  (-> (res/response (json/generate-string (products/list-products)))
+  (-> (products/list-products)
+      json/generate-string
+      res/response
       (res/content-type "application/json")))
 
 ;; TODO: Move to db ns
