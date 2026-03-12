@@ -1,5 +1,6 @@
 (ns bakery.server
   (:require
+   [bakery.db :as db]
    [bakery.http :as http]
    [ring.adapter.jetty :as jetty]))
 
@@ -7,10 +8,14 @@
 
 (defn start! []
   (if-not @server
-    (do (reset! server
-                (jetty/run-jetty #'http/app
-                              {:port 3000
-                               :join? false}))
+    (do
+      (println "Database migrations...")
+      (db/migrate)
+      (println "Starting server...")
+      (reset! server
+              (jetty/run-jetty #'http/app
+                               {:port 3000
+                                :join? false}))
       (println "Started server"))
     (println "Server already running")))
 

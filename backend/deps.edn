@@ -3,6 +3,7 @@
  :deps
  {metosin/reitit {:mvn/version "0.10.0"}
   metosin/malli {:mvn/version "0.20.0"}
+  migratus/migratus {:mvn/version "1.6.5"}
   ring/ring-core {:mvn/version "1.15.3"}
   ring/ring-jetty-adapter {:mvn/version "1.15.3"}
   cheshire/cheshire {:mvn/version "6.1.0"}

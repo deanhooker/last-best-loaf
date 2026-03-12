@@ -53,3 +53,6 @@ reset-db:
 nuke:
 	podman pod rm -f $(POD) || true
 	podman volume rm $(DB_VOLUME) || true
+
+db-shell:
+	podman exec -it bakery-db psql -U bakery

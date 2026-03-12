@@ -101,7 +101,7 @@
       footer])])
 
 
-(defn menu-item [{:keys [id name price_cents description]}]
+(defn menu-item [{:keys [id name price description]}]
   [:div {:style {:border "1px solid #eee"
                  :border-radius "8px"
                  :padding "1rem"
@@ -112,7 +112,7 @@
    [:p {:style {:color "#555"
                 :margin "0.5rem 0 1rem"}}
     description]
-   [:strong (str "$" price_cents)]
+   [:strong (str "$" price)]
    [:div
     [:button
      {:style {:padding "0.5rem 0.75rem"
