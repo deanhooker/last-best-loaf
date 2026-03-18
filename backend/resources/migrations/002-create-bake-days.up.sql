@@ -1,0 +1,5 @@
+CREATE TABLE bake_days (
+  id SERIAL PRIMARY KEY,
+  date DATE NOT NULL UNIQUE,
+  name TEXT
+);
