@@ -142,6 +142,30 @@
         {:on-click #(rf/dispatch [:navigate! :cart])}
         "View Cart"]])))
 
+(defn home-page []
+  (r/with-let [_ (rf/dispatch [:load-bake-days])]
+    (let [events @(rf/subscribe [:bake-days])]
+      [:div
+       [:div
+        [:p [:strong "Community Loaves:"]]
+        [:p "We believe good bread should be accessible."]
+        [:p "Last Best Loaf Bakery is built on small batches, long fermentation, and care for our neighbors.
+    For every full-price loaf purchased, one Community Loaf becomes available at a reduced price - offered on the honor system.
+    Good bread should be rooted in place and shared at the table. This is our way of doing both. 
+    "]]
+       (for [event events]
+         ^{:key (:date event)}
+         [:div {:style {:cursor "pointer" 
+                        :padding "10px"
+                        :border-bottom "1px solid #ccc"}
+                ;; :on-mouse-over #(do-something-on-hover)
+                :on-click #(rf/dispatch [:navigate! :event (:id event)])
+                }
+          (:date event)])
+       [:button
+        {:on-click #(rf/dispatch [:navigate! :cart])}
+        "View Cart"]])))
+
 (defn cart-summary []
   (let [count @(rf/subscribe [:cart/count])]
     [:div {:style {:position "fixed"
@@ -371,6 +395,7 @@
       (case route
         :about [about]
         :menu [menu]
+        :home-page [home-page]
         :cart [cart]
         :checkout [checkout]
         :contact [contact]

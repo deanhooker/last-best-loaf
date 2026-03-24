@@ -1,5 +1,7 @@
 (ns bakery.http
   (:require
+   [bakery.bake-day :as bake-days]
+   [bakery.bake-day-products :as bake-day-products]
    [bakery.db :as db]
    [bakery.products :as products]
    [cheshire.core :as json]
@@ -10,15 +12,24 @@
 (defn ping [_]
   (res/response "pong"))
 
-(defn scheduled-bakes [_]
-  (-> (res/response (pr-str db/bakes-stub))
-      (res/content-type "application/edn")))
-
 (defn products [_]
   (-> (products/list-products)
       json/generate-string
       res/response
       (res/content-type "application/json")))
+
+(defn bake-days [_]
+  (-> (bake-days/list-bake-days)
+      json/generate-string
+      res/response
+      (res/content-type "application/json")))
+
+(defn bake-day-products [req]
+  (let [id (get-in req [:path-params :id])]
+    (-> (bake-day-products/list-bake-day-products id)
+        json/generate-string
+        res/response
+        (res/content-type "application/json"))))
 
 ;; TODO: Move to db ns
 (defn db-ok? []
@@ -39,8 +50,9 @@
   (ring/router
    [["/ping" {:get ping}]
     ["/health" {:get health}]
-    ["/api/bakes" {:get scheduled-bakes}]
-    ["/api/products" {:get products}]]))
+    ["/api/products" {:get products}]
+    ["/api/bake-days" {:get bake-days}]
+    ["/api/bake-day-products/:id" {:get bake-day-products}]]))
 
 (def app
   (wrap-cors (ring/ring-handler router)

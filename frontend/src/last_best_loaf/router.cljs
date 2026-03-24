@@ -6,7 +6,8 @@
 
 (def routes
   ["/"
-   ["" {:name :menu}]
+   ["" {:name :home-page}]
+   ["menu" {:name :menu}]
    ["about" {:name :about}]
    ["cart" {:name :cart}]
    ["checkout" {:name :checkout}]

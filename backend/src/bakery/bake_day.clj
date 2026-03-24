@@ -7,6 +7,10 @@
   (:import
    [java.time LocalDate]))
 
+;; TODO: Add pickup time window
+;; TODO: Add pickup location
+;; TODO: Add order by cutoff
+
 (def table :bake_days)
 
 (defn create-bake-day! [bake-day]
@@ -21,3 +25,11 @@
   (sql/query db/datasource
              [(str "SELECT * FROM " (name table))]
              db/opts))
+
+(def day1
+  {:date "2026-01-01"
+   :name "test day 1"})
+
+(def day2
+  {:date "2026-02-01"
+   :name "test day 2"})
