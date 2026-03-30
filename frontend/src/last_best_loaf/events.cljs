@@ -13,8 +13,8 @@
 
 (rf/reg-fx
  :navigate
- (fn [route-name]
-   (rfe/push-state route-name)))
+ (fn [{:keys [name path-params]}]
+   (rfe/push-state name path-params)))
 
 (rf/reg-event-db
  :navigate
@@ -23,8 +23,8 @@
 
 (rf/reg-event-fx
  :navigate!
- (fn [_ [_ route-name]]
-   {:fx [[:navigate route-name]]}))
+ (fn [_ [_ route]]
+   {:fx [[:navigate route]]}))
 
 (rf/reg-event-db
  :cart/add

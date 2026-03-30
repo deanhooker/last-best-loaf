@@ -11,7 +11,9 @@
    ["about" {:name :about}]
    ["cart" {:name :cart}]
    ["checkout" {:name :checkout}]
-   ["contact" {:name :contact}]])
+   ["contact" {:name :contact}]
+   ["event"
+    ["/:id" {:name :event}]]])
 
 (def router
   (rf/router routes))

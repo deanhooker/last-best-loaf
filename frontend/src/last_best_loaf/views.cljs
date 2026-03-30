@@ -13,7 +13,7 @@
             ;; :display "flex"
             ;; :align-items "center"
             :text-decoration (when active? "underline")}
-    :on-click #(rf/dispatch [:navigate! route])}
+    :on-click #(rf/dispatch [:navigate! {:name route}])}
    content])
 
 (defn cart-icon []
@@ -52,7 +52,7 @@
                  :font-size "1.25rem"
                  :font-weight "bold"
                  :cursor "pointer"}
-         :on-click #(rf/dispatch [:navigate! :menu])}
+         :on-click #(rf/dispatch [:navigate! {:name :menu}])}
         "🥯 The Last Best Loaf Bakery"]]
 
       ;; Links
@@ -139,7 +139,7 @@
          ^{:key (:name product)}
          [menu-item product])
        [:button
-        {:on-click #(rf/dispatch [:navigate! :cart])}
+        {:on-click #(rf/dispatch [:navigate! {:name :cart}])}
         "View Cart"]])))
 
 (defn home-page []
@@ -159,11 +159,13 @@
                         :padding "10px"
                         :border-bottom "1px solid #ccc"}
                 ;; :on-mouse-over #(do-something-on-hover)
-                :on-click #(rf/dispatch [:navigate! :event (:id event)])
+                :on-click #(rf/dispatch [:navigate!
+                                         {:name :event
+                                          :path-params {:id (:id event)}}])
                 }
           (:date event)])
        [:button
-        {:on-click #(rf/dispatch [:navigate! :cart])}
+        {:on-click #(rf/dispatch [:navigate! {:name :cart}])}
         "View Cart"]])))
 
 (defn cart-summary []
@@ -187,13 +189,13 @@
 
      [:div {:style {:margin-top "1rem"}}
       [:button
-       {:on-click #(rf/dispatch [:navigate! :menu])}
+       {:on-click #(rf/dispatch [:navigate! {:name :menu}])}
        "Back to menu"]
 
       (when (seq items)
         [:button
          {:style {:margin-left "1rem"}
-          :on-click #(rf/dispatch [:navigate! :checkout])}
+          :on-click #(rf/dispatch [:navigate! {:name :checkout}])}
          "Checkout"])]]))
 
 (defn radio [label checked? on-click]
@@ -303,7 +305,7 @@
      ;; Actions
      [:div {:style {:margin-top "1.5rem"}}
       [:button
-       {:on-click #(rf/dispatch [:navigate! :cart])}
+       {:on-click #(rf/dispatch [:navigate! {:name :cart}])}
        "Back to cart"]
 
       [:button
@@ -400,5 +402,4 @@
         :checkout [checkout]
         :contact [contact]
         [:div "Loading…"])]
-     [footer]]
-    ))
+     [footer]]))
