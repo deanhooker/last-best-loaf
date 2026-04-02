@@ -13,14 +13,14 @@
    ["checkout" {:name :checkout}]
    ["contact" {:name :contact}]
    ["event"
-    ["/:id" {:name :event}]]])
+    ["/:event-id" {:name :event}]]])
 
 (def router
   (rf/router routes))
 
 (defn on-navigate [match _]
   (when match
-    (dispatch [:navigate match])))
+    (dispatch [:navigated match])))
 
 (defn start! []
   (rfe/start!

@@ -16,15 +16,22 @@
  (fn [{:keys [name path-params]}]
    (rfe/push-state name path-params)))
 
-(rf/reg-event-db
- :navigate
- (fn [db [_ match]]
-   (assoc db :route match)))
-
 (rf/reg-event-fx
  :navigate!
  (fn [_ [_ route]]
    {:fx [[:navigate route]]}))
+
+(rf/reg-event-fx
+ :navigated
+ (fn [{:keys [db]} [_ match]]
+   (let [route-name (get-in match [:data :name])
+         params (:path-params match)]
+     (case route-name
+       :event
+       {:db (assoc db :route match)
+        :dispatch [:load-event (:event-id params)]}
+
+       {:db (assoc db :route match)}))))
 
 (rf/reg-event-db
  :cart/add
@@ -82,19 +89,40 @@
 
 ;; Fetch Bake Days
 (rf/reg-event-fx
- :load-bake-days
+ :load-events
  (fn [_ _]
-   {:fetch-bake-days {:on-success #(rf/dispatch [:set-bake-days %])
-                      :on-failure #(js/console.error "Failed to fetch bake-days:" %)}}))
+   {:fetch-events {:on-success #(rf/dispatch [:set-events %])
+                   :on-failure #(js/console.error "Failed to fetch events: " %)}}))
 
 (rf/reg-fx
- :fetch-bake-days
+ :fetch-events
  (fn [{:keys [on-success on-failure]}]
    (-> (fetch-json "http://localhost:3000/api/bake-days")
        (.then on-success)
        (.catch on-failure))))
 
 (rf/reg-event-db
- :set-bake-days
+ :set-events
  (fn [db [_ response]]
-   (assoc db :bake-days response)))
+   (assoc db :events-list response)))
+
+;; Fetch Event
+(rf/reg-event-fx
+ :load-event
+ (fn [_ [_ event-id]]
+   {:fetch-event
+    {:event-id event-id
+     :on-success #(rf/dispatch [:set-event event-id %])
+     :on-failure #(js/console.error "Failed to fetch event: " %)}}))
+
+(rf/reg-fx
+ :fetch-event
+ (fn [{:keys [event-id on-success on-failure]}]
+   (-> (fetch-json (str "http://localhost:3000/api/event/" event-id))
+       (.then on-success)
+       (.catch on-failure))))
+
+(rf/reg-event-db
+ :set-event
+ (fn [db [_ event-id response]]
+   (assoc-in db [:events event-id] response)))

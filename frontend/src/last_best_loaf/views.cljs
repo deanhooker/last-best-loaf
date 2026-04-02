@@ -143,8 +143,8 @@
         "View Cart"]])))
 
 (defn home-page []
-  (r/with-let [_ (rf/dispatch [:load-bake-days])]
-    (let [events @(rf/subscribe [:bake-days])]
+  (r/with-let [_ (rf/dispatch [:load-events])]
+    (let [events @(rf/subscribe [:events-list])]
       [:div
        [:div
         [:p [:strong "Community Loaves:"]]
@@ -161,7 +161,7 @@
                 ;; :on-mouse-over #(do-something-on-hover)
                 :on-click #(rf/dispatch [:navigate!
                                          {:name :event
-                                          :path-params {:id (:id event)}}])
+                                          :path-params {:event-id (:id event)}}])
                 }
           (:date event)])
        [:button
@@ -387,6 +387,10 @@
      [:div "Instagram: @lastbestbakery"]
      [:div "Facebook: The Last Best Loaf Bakery"]]]])
 
+(defn event-page []
+  (let [products @(rf/subscribe [:event])]
+    [:div (str products)]))
+
 (defn root []
   (let [route @(rf/subscribe [:route-name])]
     [:div
@@ -401,5 +405,6 @@
         :cart [cart]
         :checkout [checkout]
         :contact [contact]
+        :event [event-page]
         [:div "Loading…"])]
      [footer]]))

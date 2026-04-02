@@ -19,7 +19,7 @@
     :email ""
     :phone ""}
 
-   :bake-days nil
+   :events nil
 
    :ui
    {:errors {}

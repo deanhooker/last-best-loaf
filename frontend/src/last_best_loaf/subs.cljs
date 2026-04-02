@@ -35,9 +35,15 @@
    (:customer db)))
 
 (rf/reg-sub
- :bake-days
+ :event
  (fn [db _]
-   (:bake-days db)))
+   (let [event-id (get-in db [:route :path-params :event-id])]
+     (get-in db [:events event-id]))))
+
+(rf/reg-sub
+ :events-list
+ (fn [db _]
+   (:events-list db)))
 
 (rf/reg-sub
  :products
