@@ -1,5 +1,6 @@
 (ns last-best-loaf.views
   (:require
+   [last-best-loaf.util :refer [format-date]]
    [reagent.core :as r]
    [re-frame.core :as rf]))
 
@@ -52,7 +53,7 @@
                  :font-size "1.25rem"
                  :font-weight "bold"
                  :cursor "pointer"}
-         :on-click #(rf/dispatch [:navigate! {:name :menu}])}
+         :on-click #(rf/dispatch [:navigate! {:name :home-page}])}
         "🥯 The Last Best Loaf Bakery"]]
 
       ;; Links
@@ -149,10 +150,8 @@
        [:div
         [:p [:strong "Community Loaves:"]]
         [:p "We believe good bread should be accessible."]
-        [:p "Last Best Loaf Bakery is built on small batches, long fermentation, and care for our neighbors.
-    For every full-price loaf purchased, one Community Loaf becomes available at a reduced price - offered on the honor system.
-    Good bread should be rooted in place and shared at the table. This is our way of doing both. 
-    "]]
+        [:p "Last Best Loaf Bakery is built on small batches, long fermentation, and care for our neighbors. For every full-price loaf purchased, one Community Loaf becomes available at a reduced price - offered on the honor system. Good bread should be rooted in place and shared at the table. This is our way of doing both."]]
+       [:p [:strong "Current list of events"]]
        (for [event events]
          ^{:key (:date event)}
          [:div {:style {:cursor "pointer" 
@@ -163,7 +162,7 @@
                                          {:name :event
                                           :path-params {:event-id (:id event)}}])
                 }
-          (:date event)])
+          (format-date (:date event))])
        [:button
         {:on-click #(rf/dispatch [:navigate! {:name :cart}])}
         "View Cart"]])))
@@ -388,8 +387,16 @@
      [:div "Facebook: The Last Best Loaf Bakery"]]]])
 
 (defn event-page []
-  (let [products @(rf/subscribe [:event])]
-    [:div (str products)]))
+  (let [event @(rf/subscribe [:event])
+        products (:products event)]
+    [:div
+     [:h2 "Menu"]
+     (for [product products]
+       ^{:key (:name product)}
+       [menu-item product])
+     [:button
+      {:on-click #(rf/dispatch [:navigate! {:name :cart}])}
+      "View Cart"]]))
 
 (defn root []
   (let [route @(rf/subscribe [:route-name])]
