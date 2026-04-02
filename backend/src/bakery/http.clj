@@ -3,6 +3,7 @@
    [bakery.bake-day :as bake-days]
    [bakery.bake-day-products :as bake-day-products]
    [bakery.db :as db]
+   [bakery.event :as event]
    [bakery.products :as products]
    [cheshire.core :as json]
    [reitit.ring :as ring]
@@ -31,6 +32,13 @@
         res/response
         (res/content-type "application/json"))))
 
+(defn event [req]
+  (let [id (get-in req [:path-params :id])]
+    (-> (event/get-event id)
+        json/generate-string
+        res/response
+        (res/content-type "application/json"))))
+
 ;; TODO: Move to db ns
 (defn db-ok? []
   (try
@@ -52,7 +60,8 @@
     ["/health" {:get health}]
     ["/api/products" {:get products}]
     ["/api/bake-days" {:get bake-days}]
-    ["/api/bake-day-products/:id" {:get bake-day-products}]]))
+    ["/api/bake-day-products/:id" {:get bake-day-products}]
+    ["/api/event/:id" {:get event}]]))
 
 (def app
   (wrap-cors (ring/ring-handler router)

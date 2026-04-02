@@ -19,6 +19,13 @@
              ["SELECT * FROM products"]
              db/opts))
 
+(defn products-map
+  "Hashmap of products, keyed by id."
+  []
+  (->> (list-products)
+       (map (fn [product] [(:id product) product]))
+       (into {})))
+
 (def plain-bagels
   {:name "Plain Bagels"
    :price 1000

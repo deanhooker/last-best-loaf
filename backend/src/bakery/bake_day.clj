@@ -26,6 +26,13 @@
              [(str "SELECT * FROM " (name table))]
              db/opts))
 
+(defn get-bake-day [id]
+  (first
+   (sql/query db/datasource
+              [(str "SELECT * FROM " (name table)
+                    " WHERE id=" id)]
+              db/opts)))
+
 (def day1
   {:date "2026-01-01"
    :name "test day 1"})
