@@ -1,6 +1,6 @@
 (ns last-best-loaf.views
   (:require
-   [last-best-loaf.util :refer [format-date]]
+   [last-best-loaf.util :refer [format-date format-money]]
    [reagent.core :as r]
    [re-frame.core :as rf]))
 
@@ -113,7 +113,7 @@
    [:p {:style {:color "#555"
                 :margin "0.5rem 0 1rem"}}
     description]
-   [:strong (str "$" price)]
+   [:strong (format-money price)]
    [:div
     [:button
      {:style {:padding "0.5rem 0.75rem"
