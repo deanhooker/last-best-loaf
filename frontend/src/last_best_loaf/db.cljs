@@ -4,8 +4,9 @@
   {:route nil
 
    :products []
-   
-   :cart {:items {}}
+
+   :cart {:event-id nil
+          :items {}}
 
    :checkout
    {:fulfillment :pickup   ;; :pickup | :delivery

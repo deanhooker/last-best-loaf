@@ -101,28 +101,28 @@
                     :padding-top "1rem"}}
       footer])])
 
-
-(defn menu-item [{:keys [id name price description]}]
-  [:div {:style {:border "1px solid #eee"
-                 :border-radius "8px"
-                 :padding "1rem"
-                 :margin-bottom "1rem"}}
-   [:div {:style {:display "flex"
-                  :justify-content "space-between"}}
-    [:h3 {:style {:margin 0}} name]]
-   [:p {:style {:color "#555"
-                :margin "0.5rem 0 1rem"}}
-    description]
-   [:strong (format-money price)]
-   [:div
-    [:button
-     {:style {:padding "0.5rem 0.75rem"
-              :border-radius "6px"
-              :background "#222"
-              :color "white"
-              :border "none"}
-      :on-click #(rf/dispatch [:cart/add id])}
-     "Add to cart"]]])
+(defn menu-item [item]
+  (let [{:keys [id name price description]} item]
+    [:div {:style {:border "1px solid #eee"
+                   :border-radius "8px"
+                   :padding "1rem"
+                   :margin-bottom "1rem"}}
+     [:div {:style {:display "flex"
+                    :justify-content "space-between"}}
+      [:h3 {:style {:margin 0}} name]]
+     [:p {:style {:color "#555"
+                  :margin "0.5rem 0 1rem"}}
+      description]
+     [:strong (format-money price)]
+     [:div
+      [:button
+       {:style {:padding "0.5rem 0.75rem"
+                :border-radius "6px"
+                :background "#222"
+                :color "white"
+                :border "none"}
+        :on-click #(rf/dispatch [:cart/add item])}
+       "Add to cart"]]]))
 
 (defn menu []
   (r/with-let [_ (rf/dispatch [:load-products])]
@@ -178,19 +178,17 @@
   (let [items @(rf/subscribe [:cart/items])]
     [:div
      [:h2 "Your Cart"]
-
      (if (empty? items)
        [:p "Your cart is empty."]
        [:ul
-        (for [[id {:keys [qty]}] items]
+        (for [[id {:keys [item qty]}] items]
           ^{:key id}
-          [:li (str (name id) " × " qty)])])
+          [:li (str (:name item) " × " qty)])])
 
      [:div {:style {:margin-top "1rem"}}
       [:button
        {:on-click #(rf/dispatch [:navigate! {:name :menu}])}
        "Back to menu"]
-
       (when (seq items)
         [:button
          {:style {:margin-left "1rem"}

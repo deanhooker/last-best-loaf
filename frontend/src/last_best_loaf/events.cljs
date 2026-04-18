@@ -33,14 +33,26 @@
 
        {:db (assoc db :route match)}))))
 
+;; TODO: Add validation
+;; - Check new item allowed in cart
+;; - Send warning to user if not
+;; - Allow user to reset cart
 (rf/reg-event-db
  :cart/add
- (fn [db [_ item-id]]
-   (update-in db [:cart :items item-id]
-              (fn [item]
-                (if item
-                  (update item :qty inc)
-                  {:id item-id :qty 1})))))
+ (fn [db [_ item]]
+   (let [event-id (:bake_day_id item)
+         item-id (:id item)
+         current-cart-event-id (:event-id (:cart db))]
+     (if (or (nil? current-cart-event-id)
+             (= event-id current-cart-event-id))
+       (-> db
+           (assoc-in [:cart :event-id] event-id)
+           (update-in [:cart :items item-id]
+                      (fn [current-item]
+                        (if current-item
+                          (update current-item :qty inc)
+                          {:item item :qty 1}))))
+       (println "Error: Can't have multiple events in cart!")))))
 
 (rf/reg-event-db
  :cart/remove
