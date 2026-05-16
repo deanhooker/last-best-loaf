@@ -412,9 +412,12 @@
 
 (defn root []
   (let [route @(rf/subscribe [:route-name])]
-    [:div
+    [:div {:style {:display "flex"
+                   :flexDirection "column"
+                   :minHeight "100vh"}}
      [nav-bar]
-     [:div {:style {:max-width "640px"
+     [:div {:style {:flex "1"
+                    :max-width "640px"
                     :margin "0 auto"
                     :padding "0 1rem"}}
       (case route
