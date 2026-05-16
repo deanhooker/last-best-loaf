@@ -167,6 +167,17 @@
         {:on-click #(rf/dispatch [:navigate! {:name :cart}])}
         "View Cart"]])))
 
+(defn home-page-stub []
+  [:div
+   [:div
+    [:p [:strong "Community Loaves:"]]
+    [:p "We believe good bread should be accessible."]
+    [:p "Last Best Loaf Bakery is built on small batches, long fermentation, and care for our neighbors. For every full-price loaf purchased, one Community Loaf becomes available at a reduced price - offered on the honor system. Good bread should be rooted in place and shared at the table. This is our way of doing both."]]
+   [:p [:strong "Current list of events"]]
+   [:button
+    {:on-click #(rf/dispatch [:navigate! {:name :cart}])}
+    "View Cart"]])
+
 (defn cart-summary []
   (let [count @(rf/subscribe [:cart/count])]
     [:div {:style {:position "fixed"
@@ -314,6 +325,9 @@
 (defn about []
   [:div "Coming soon!!"])
 
+(defn coming-soon []
+  [:div "Coming soon!!"])
+
 (defn contact-info []
   [:div {:style {:flex "1 1 380px"
                  :line-height "1.6"}}
@@ -405,8 +419,8 @@
                     :padding "0 1rem"}}
       (case route
         :about [about]
-        :menu [menu]
-        :home-page [home-page]
+        :menu [coming-soon]
+        :home-page [home-page-stub]
         :cart [cart]
         :checkout [checkout]
         :contact [contact]
