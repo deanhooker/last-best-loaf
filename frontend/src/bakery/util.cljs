@@ -1,4 +1,4 @@
-(ns last-best-loaf.util)
+(ns bakery.util)
 
 (defn format-date [ts]
   (let [d (js/Date. ts)]

@@ -1,4 +1,4 @@
-(ns last-best-loaf.validation)
+(ns bakery.validation)
 
 (defn required? [s]
   (and (string? s) (not (clojure.string/blank? s))))

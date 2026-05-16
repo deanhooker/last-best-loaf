@@ -1,10 +1,10 @@
-(ns last-best-loaf.events
+(ns bakery.events
   (:require
    [re-frame.core :as rf]
    [reitit.frontend.easy :as rfe]
-   [last-best-loaf.db :as db]
-   [last-best-loaf.http :refer [fetch-edn fetch-json]]
-   [last-best-loaf.validation :as v]))
+   [bakery.db :as db]
+   [bakery.http :refer [fetch-edn fetch-json]]
+   [bakery.validation :as v]))
 
 (rf/reg-event-db
  :initialize-db

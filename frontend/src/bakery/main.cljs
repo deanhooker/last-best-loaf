@@ -1,12 +1,12 @@
-(ns last-best-loaf.main
+(ns bakery.main
   "Entry point for the website."
   (:require
    [re-frame.core :as rf]
    [reagent.dom :as dom]
-   [last-best-loaf.events]
-   [last-best-loaf.subs]
-   [last-best-loaf.router :as router]
-   [last-best-loaf.views :as views]))
+   [bakery.events]
+   [bakery.subs]
+   [bakery.router :as router]
+   [bakery.views :as views]))
 
 
 ;; `init` is called once on app startup.

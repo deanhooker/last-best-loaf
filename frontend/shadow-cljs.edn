@@ -17,10 +17,10 @@
    :output-dir "public/js"
    :asset-path "/js"
    :modules
-   {:main {:init-fn last-best-loaf.main/init}}
+   {:main {:init-fn bakery.main/init}}
    :devtools
    {:preloads [day8.re-frame-10x.preload]
-    :after-load last-best-loaf.main/start}
+    :after-load bakery.main/start}
    :dev
    {:compiler-options
     {:closure-defines

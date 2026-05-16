@@ -1,4 +1,4 @@
-(ns last-best-loaf.db)
+(ns bakery.db)
 
 (def default-db
   {:route nil

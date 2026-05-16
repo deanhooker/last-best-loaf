@@ -1,4 +1,4 @@
-(ns last-best-loaf.http
+(ns bakery.http
   (:require
    [cljs.reader :as reader]))
 

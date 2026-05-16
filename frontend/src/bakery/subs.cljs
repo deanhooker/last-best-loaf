@@ -1,4 +1,4 @@
-(ns last-best-loaf.subs
+(ns bakery.subs
   (:require
    [re-frame.core :as rf]))
 

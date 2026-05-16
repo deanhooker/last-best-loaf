@@ -1,4 +1,4 @@
-(ns last-best-loaf.router
+(ns bakery.router
   (:require
    [reitit.frontend :as rf]
    [reitit.frontend.easy :as rfe]

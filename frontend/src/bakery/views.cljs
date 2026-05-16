@@ -1,6 +1,6 @@
-(ns last-best-loaf.views
+(ns bakery.views
   (:require
-   [last-best-loaf.util :refer [format-date format-money]]
+   [bakery.util :refer [format-date format-money]]
    [reagent.core :as r]
    [re-frame.core :as rf]))
 
@@ -132,9 +132,9 @@
        [:div
         [:p [:strong "Community Loaves:"]]
         [:p "We believe good bread should be accessible."]
-        [:p "Last Best Loaf Bakery is built on small batches, long fermentation, and care for our neighbors. 
+        [:p "Last Best Loaf Bakery is built on small batches, long fermentation, and care for our neighbors.
     For every full-price loaf purchased, one Community Loaf becomes available at a reduced price - offered on the honor system.
-    Good bread should be rooted in place and shared at the table. This is our way of doing both. 
+    Good bread should be rooted in place and shared at the table. This is our way of doing both.
     "]]
        (for [product products]
          ^{:key (:name product)}
@@ -154,7 +154,7 @@
        [:p [:strong "Current list of events"]]
        (for [event events]
          ^{:key (:date event)}
-         [:div {:style {:cursor "pointer" 
+         [:div {:style {:cursor "pointer"
                         :padding "10px"
                         :border-bottom "1px solid #ccc"}
                 ;; :on-mouse-over #(do-something-on-hover)
