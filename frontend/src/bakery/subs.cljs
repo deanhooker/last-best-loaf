@@ -60,3 +60,9 @@
  :<- [:errors]
  (fn [errors _]
    (empty? errors)))
+
+;; Hero Component
+(rf/reg-sub
+ :hero/current-index
+ (fn [db _]
+   (:hero/current-index db)))

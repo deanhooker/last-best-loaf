@@ -25,4 +25,6 @@
    :ui
    {:errors {}
     :submitting? false}
+
+   :hero/current-index 0
    })

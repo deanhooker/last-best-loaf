@@ -1,8 +1,14 @@
 (ns bakery.views
   (:require
+   [bakery.images :as images]
    [bakery.util :refer [format-date format-money]]
    [reagent.core :as r]
    [re-frame.core :as rf]))
+
+(def navbar-height 8)
+(def hero-height (- 101 navbar-height)) ;; Landing view should only show navbar & hero
+(def footer-height 12)
+(def min-app-height (+ navbar-height hero-height footer-height))
 
 (defn nav-link [content route active?]
   [:button
@@ -11,9 +17,8 @@
             :padding "0.25rem 0.5rem"
             :font-size "1rem"
             :cursor "pointer"
-            ;; :display "flex"
-            ;; :align-items "center"
             :text-decoration (when active? "underline")}
+    :disabled true ;; TODO: enable once additional pages have been implemented
     :on-click #(rf/dispatch [:navigate! {:name route}])}
    content])
 
@@ -31,15 +36,23 @@
    [:circle {:cx 20 :cy 21 :r 1}]
    [:path {:d "M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"}]])
 
-
 (defn nav-bar []
   (let [current @(rf/subscribe [:route-name])
         cart-count @(rf/subscribe [:cart/count])]
-    [:div {:style {:border-bottom "1px solid #eee"
-                   :padding "0.75rem 1rem"
-                   :margin-bottom "1.5rem"}}
+    [:div {:style {:position "fixed"
+                   :top "0"
+                   :left "0"
+                   :right "0"
+                   :zIndex 1000
+                   :background "white"
+                   :border-bottom "1px solid #eee"
+                   :padding "0 1rem"
+                   :height (str navbar-height "vh")
+                   :display "flex"
+                   :align-items "center"}}
 
-     [:div {:style {:max-width "960px"
+     [:div {:style {:width "100%"
+                    :max-width "1300px"
                     :margin "0 auto"
                     :display "flex"
                     :align-items "center"
@@ -54,22 +67,22 @@
                  :font-weight "bold"
                  :cursor "pointer"}
          :on-click #(rf/dispatch [:navigate! {:name :home-page}])}
-        "🥯 The Last Best Loaf Bakery"]]
+        "The Last Best Loaf Bakery"]]
 
       ;; Links
       [:div
-       [nav-link "Menu" :menu (= current :menu)]
+       ;; [nav-link "Menu" :menu (= current :menu)]
        [nav-link "About" :about (= current :about)]
-       [nav-link "Contact" :contact (= current :contact)]
-       [nav-link
-        [:<>
-         [cart-icon]
-         (when (pos? cart-count)
-           [:span {:style {:font-size "0.85rem"
-                           :margin-left "0.25rem"}}
-            cart-count])]
-        :cart
-        (= current :cart)]
+       ;; [nav-link "Contact" :contact (= current :contact)]
+       ;; [nav-link
+       ;;  [:<>
+       ;;   [cart-icon]
+       ;;   (when (pos? cart-count)
+       ;;     [:span {:style {:font-size "0.85rem"
+       ;;                     :margin-left "0.25rem"}}
+       ;;      cart-count])]
+       ;;  :cart
+       ;;  (= current :cart)]
        ]]]))
 
 
@@ -362,41 +375,31 @@
   [:footer
    {:style {:background "#8b3a0e"
             :color "white"
-            :padding "2rem 1rem"
-            :margin-top "4rem"}}
+            :padding "2rem 1rem"}}
 
    [:div
-    {:style {:max-width "1100px"
+    {:style {:max-width "900px"
              :margin "0 auto"
              :display "flex"
              :flex-wrap "wrap"
              :gap "2rem"
              :font-size "0.9rem"}}
 
-    ;; Left: address
     [:div {:style {:flex "1 1 240px"}}
      [:div {:style {:font-weight "bold" :margin-bottom "0.5rem"}}
       "The Last Best Loaf Bakery"]
-     [:div "3100 Technology Blvd W, Apt 301"]
-     [:div "Bozeman, MT"]]
+     [:div "Bozeman, Montana"]]
 
-    ;; Middle: contact
     [:div {:style {:flex "1 1 240px"}}
      [:div {:style {:font-weight "bold" :margin-bottom "0.5rem"}}
       "Contact"]
-     [:div "Phone: (610) 730-1579"]
      [:div
-      [:a {:href "mailto:thelastbestbakery@gmail.com"
+      [:a {:href "mailto:lastbestloaf@gmail.com"
            :style {:color "white"
                    :text-decoration "underline"}}
-       "thelastbestbakery@gmail.com"]]]
+       "lastbestloaf@gmail.com"]]]
 
-    ;; Right: social
-    [:div {:style {:flex "1 1 240px"}}
-     [:div {:style {:font-weight "bold" :margin-bottom "0.5rem"}}
-      "Follow"]
-     [:div "Instagram: @lastbestbakery"]
-     [:div "Facebook: The Last Best Loaf Bakery"]]]])
+    ]])
 
 (defn event-page []
   (let [event @(rf/subscribe [:event])
@@ -410,20 +413,55 @@
       {:on-click #(rf/dispatch [:navigate! {:name :cart}])}
       "View Cart"]]))
 
+(defn hero []
+  (let [img @(rf/subscribe [:hero/current-index])]
+    [:div {:style {:position "relative"
+                   :flex "1"
+                   :overflow "hidden"
+                   :height (str hero-height "vh")}}
+
+     [:img {:style {:position "absolute"
+                    :inset "0"
+                    :width "100%"
+                    :height "100%"
+                    :objectFit "cover"}
+            :src (nth images/hero-reel img)}]
+
+     [:div {:style {:position "absolute"
+                    :inset "0"}}]
+
+     [:div {:style {:position "absolute"
+                    :inset "0"
+                    :display "flex"
+                    :alignItems "center"
+                    :justifyContent "center"
+                    :color "white"
+                    :zIndex 2}}
+      ;; TODO: Add info / contact collection over hero
+      ;; [:div
+      ;;  [:h1 "My Bakery"]
+      ;;  [:p "Fresh bread every day"]]
+      ]]))
+
 (defn root []
   (let [route @(rf/subscribe [:route-name])]
-    [:div
+    [:div {:style {:display "flex"
+                   :flexDirection "column"
+                   :minHeight (str min-app-height "vh")
+                   :paddingTop (str navbar-height "vh")}}
      [nav-bar]
-     [:div {:style {:max-width "640px"
-                    :margin "0 auto"
-                    :padding "0 1rem"}}
-      (case route
-        :about [about]
-        :menu [coming-soon]
-        :home-page [home-page-stub]
-        :cart [cart]
-        :checkout [checkout]
-        :contact [contact]
-        :event [event-page]
-        [:div "Loading…"])]
+     (if (= route :home-page)
+       [hero]
+       [:div {:style {:flex "1"
+                      :max-width "640px"
+                      :margin "0 auto"
+                      :padding "0 1rem"}}
+        (case route
+          :about [about]
+          :menu [coming-soon]
+          :cart [cart]
+          :checkout [checkout]
+          :contact [contact]
+          :event [event-page]
+          [:div "Loading…"])])
      [footer]]))

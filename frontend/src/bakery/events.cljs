@@ -4,6 +4,7 @@
    [reitit.frontend.easy :as rfe]
    [bakery.db :as db]
    [bakery.http :refer [fetch-edn fetch-json]]
+   [bakery.images :as images]
    [bakery.validation :as v]))
 
 (rf/reg-event-db
@@ -138,3 +139,26 @@
  :set-event
  (fn [db [_ event-id response]]
    (assoc-in db [:events event-id] response)))
+
+;; Hero Component
+(rf/reg-event-db
+ :hero/init
+ (fn [db _]
+   (assoc db :hero/current-index 0)))
+
+(rf/reg-event-db
+ :hero/next
+ (fn [db _]
+   (update db :hero/current-index
+           #(mod (inc %) (count images/hero-reel)))))
+
+(rf/reg-fx
+ :dispatch-interval
+ (fn [{:keys [event ms]}]
+   (js/setInterval #(rf/dispatch event) ms)))
+
+(rf/reg-event-fx
+ :hero/start
+ (fn [_ _]
+   {:dispatch-interval {:event [:hero/next]
+                        :ms 5000}}))
