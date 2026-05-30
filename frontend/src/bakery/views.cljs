@@ -45,10 +45,13 @@
                    :zIndex 1000
                    :background "white"
                    :border-bottom "1px solid #eee"
-                   :padding "0.75rem 1rem"
-                   :height (str navbar-height "vh")}}
+                   :padding "0 1rem"
+                   :height (str navbar-height "vh")
+                   :display "flex"
+                   :align-items "center"}}
 
-     [:div {:style {:max-width "960px"
+     [:div {:style {:width "100%"
+                    :max-width "1300px"
                     :margin "0 auto"
                     :display "flex"
                     :align-items "center"
