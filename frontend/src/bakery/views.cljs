@@ -38,7 +38,13 @@
 (defn nav-bar []
   (let [current @(rf/subscribe [:route-name])
         cart-count @(rf/subscribe [:cart/count])]
-    [:div {:style {:border-bottom "1px solid #eee"
+    [:div {:style {:position "fixed"
+                   :top "0"
+                   :left "0"
+                   :right "0"
+                   :zIndex 1000
+                   :background "white"
+                   :border-bottom "1px solid #eee"
                    :padding "0.75rem 1rem"
                    :height (str navbar-height "vh")}}
 
@@ -444,7 +450,8 @@
   (let [route @(rf/subscribe [:route-name])]
     [:div {:style {:display "flex"
                    :flexDirection "column"
-                   :minHeight (str min-app-height "vh")}}
+                   :minHeight (str min-app-height "vh")
+                   :paddingTop (str navbar-height "vh")}}
      [nav-bar]
      (if (= route :home-page)
        [hero]
