@@ -378,37 +378,28 @@
             :padding "2rem 1rem"}}
 
    [:div
-    {:style {:max-width "1100px"
+    {:style {:max-width "900px"
              :margin "0 auto"
              :display "flex"
              :flex-wrap "wrap"
              :gap "2rem"
              :font-size "0.9rem"}}
 
-    ;; Left: address
     [:div {:style {:flex "1 1 240px"}}
      [:div {:style {:font-weight "bold" :margin-bottom "0.5rem"}}
       "The Last Best Loaf Bakery"]
-     [:div "3100 Technology Blvd W, Apt 301"]
-     [:div "Bozeman, MT"]]
+     [:div "Bozeman, Montana"]]
 
-    ;; Middle: contact
     [:div {:style {:flex "1 1 240px"}}
      [:div {:style {:font-weight "bold" :margin-bottom "0.5rem"}}
       "Contact"]
-     [:div "Phone: (610) 730-1579"]
      [:div
-      [:a {:href "mailto:thelastbestbakery@gmail.com"
+      [:a {:href "mailto:lastbestloaf@gmail.com"
            :style {:color "white"
                    :text-decoration "underline"}}
-       "thelastbestbakery@gmail.com"]]]
+       "lastbestloaf@gmail.com"]]]
 
-    ;; Right: social
-    [:div {:style {:flex "1 1 240px"}}
-     [:div {:style {:font-weight "bold" :margin-bottom "0.5rem"}}
-      "Follow"]
-     [:div "Instagram: @lastbestbakery"]
-     [:div "Facebook: The Last Best Loaf Bakery"]]]])
+    ]])
 
 (defn event-page []
   (let [event @(rf/subscribe [:event])
