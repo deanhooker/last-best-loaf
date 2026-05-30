@@ -442,9 +442,11 @@
                     :justifyContent "center"
                     :color "white"
                     :zIndex 2}}
-      [:div
-       [:h1 "My Bakery"]
-       [:p "Fresh bread every day"]]]]))
+      ;; TODO: Add info / contact collection over hero
+      ;; [:div
+      ;;  [:h1 "My Bakery"]
+      ;;  [:p "Fresh bread every day"]]
+      ]]))
 
 (defn root []
   (let [route @(rf/subscribe [:route-name])]
