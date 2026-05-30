@@ -18,6 +18,7 @@
             :font-size "1rem"
             :cursor "pointer"
             :text-decoration (when active? "underline")}
+    :disabled true ;; TODO: enable once additional pages have been implemented
     :on-click #(rf/dispatch [:navigate! {:name route}])}
    content])
 
@@ -66,22 +67,22 @@
                  :font-weight "bold"
                  :cursor "pointer"}
          :on-click #(rf/dispatch [:navigate! {:name :home-page}])}
-        "🥯 The Last Best Loaf Bakery"]]
+        "The Last Best Loaf Bakery"]]
 
       ;; Links
       [:div
-       [nav-link "Menu" :menu (= current :menu)]
+       ;; [nav-link "Menu" :menu (= current :menu)]
        [nav-link "About" :about (= current :about)]
-       [nav-link "Contact" :contact (= current :contact)]
-       [nav-link
-        [:<>
-         [cart-icon]
-         (when (pos? cart-count)
-           [:span {:style {:font-size "0.85rem"
-                           :margin-left "0.25rem"}}
-            cart-count])]
-        :cart
-        (= current :cart)]
+       ;; [nav-link "Contact" :contact (= current :contact)]
+       ;; [nav-link
+       ;;  [:<>
+       ;;   [cart-icon]
+       ;;   (when (pos? cart-count)
+       ;;     [:span {:style {:font-size "0.85rem"
+       ;;                     :margin-left "0.25rem"}}
+       ;;      cart-count])]
+       ;;  :cart
+       ;;  (= current :cart)]
        ]]]))
 
 
