@@ -1,8 +1,14 @@
 (ns bakery.views
   (:require
+   [bakery.images :as images]
    [bakery.util :refer [format-date format-money]]
    [reagent.core :as r]
    [re-frame.core :as rf]))
+
+(def navbar-height 8)
+(def hero-height (- 101 navbar-height)) ;; Landing view should only show navbar & hero
+(def footer-height 12)
+(def min-app-height (+ navbar-height hero-height footer-height))
 
 (defn nav-link [content route active?]
   [:button
@@ -11,8 +17,6 @@
             :padding "0.25rem 0.5rem"
             :font-size "1rem"
             :cursor "pointer"
-            ;; :display "flex"
-            ;; :align-items "center"
             :text-decoration (when active? "underline")}
     :on-click #(rf/dispatch [:navigate! {:name route}])}
    content])
@@ -31,13 +35,12 @@
    [:circle {:cx 20 :cy 21 :r 1}]
    [:path {:d "M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"}]])
 
-
 (defn nav-bar []
   (let [current @(rf/subscribe [:route-name])
         cart-count @(rf/subscribe [:cart/count])]
     [:div {:style {:border-bottom "1px solid #eee"
                    :padding "0.75rem 1rem"
-                   :margin-bottom "1.5rem"}}
+                   :height (str navbar-height "vh")}}
 
      [:div {:style {:max-width "960px"
                     :margin "0 auto"
@@ -362,8 +365,7 @@
   [:footer
    {:style {:background "#8b3a0e"
             :color "white"
-            :padding "2rem 1rem"
-            :margin-top "4rem"}}
+            :padding "2rem 1rem"}}
 
    [:div
     {:style {:max-width "1100px"
@@ -410,23 +412,52 @@
       {:on-click #(rf/dispatch [:navigate! {:name :cart}])}
       "View Cart"]]))
 
+(defn hero []
+  (let [img @(rf/subscribe [:hero/current-index])]
+    [:div {:style {:position "relative"
+                   :flex "1"
+                   :overflow "hidden"
+                   :height (str hero-height "vh")}}
+
+     [:img {:style {:position "absolute"
+                    :inset "0"
+                    :width "100%"
+                    :height "100%"
+                    :objectFit "cover"}
+            :src (nth images/hero-reel img)}]
+
+     [:div {:style {:position "absolute"
+                    :inset "0"}}]
+
+     [:div {:style {:position "absolute"
+                    :inset "0"
+                    :display "flex"
+                    :alignItems "center"
+                    :justifyContent "center"
+                    :color "white"
+                    :zIndex 2}}
+      [:div
+       [:h1 "My Bakery"]
+       [:p "Fresh bread every day"]]]]))
+
 (defn root []
   (let [route @(rf/subscribe [:route-name])]
     [:div {:style {:display "flex"
                    :flexDirection "column"
-                   :minHeight "100vh"}}
+                   :minHeight (str min-app-height "vh")}}
      [nav-bar]
-     [:div {:style {:flex "1"
-                    :max-width "640px"
-                    :margin "0 auto"
-                    :padding "0 1rem"}}
-      (case route
-        :about [about]
-        :menu [coming-soon]
-        :home-page [home-page-stub]
-        :cart [cart]
-        :checkout [checkout]
-        :contact [contact]
-        :event [event-page]
-        [:div "Loading…"])]
+     (if (= route :home-page)
+       [hero]
+       [:div {:style {:flex "1"
+                      :max-width "640px"
+                      :margin "0 auto"
+                      :padding "0 1rem"}}
+        (case route
+          :about [about]
+          :menu [coming-soon]
+          :cart [cart]
+          :checkout [checkout]
+          :contact [contact]
+          :event [event-page]
+          [:div "Loading…"])])
      [footer]]))

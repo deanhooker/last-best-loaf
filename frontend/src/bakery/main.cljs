@@ -20,5 +20,7 @@
 (defn ^:export init []
   (js/console.log "Initializing app")
   (rf/dispatch-sync [:initialize-db])
+  (rf/dispatch [:hero/init])
+  (rf/dispatch [:hero/start])
   (router/start!)
   (start))
