@@ -65,7 +65,8 @@
                  :border "none"
                  :font-size "1.25rem"
                  :font-weight "bold"
-                 :cursor "pointer"}
+                 :cursor "pointer"
+                 :color "inherit"}
          :on-click #(rf/dispatch [:navigate! {:name :home-page}])}
         "The Last Best Loaf Bakery"]]
 
