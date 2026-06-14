@@ -10,6 +10,21 @@
 (def footer-height 12)
 (def min-app-height (+ navbar-height hero-height footer-height))
 
+(def about-text
+  ["Hi, I'm Carolyn."
+
+   "I started making sourdough during a short hiatus from my work as a data scientist. Handcrafting individual loaves, watching them rise, and learning how they react to different environments felt deeply rewarding. Spending time away from the computer and working with my hands just felt right. Going back to basics."
+
+   "I care deeply about providing my community with food that is not only healthy, but truly delicious. Every loaf is naturally leavened with sourdough and made with thoughtfully sourced ingredients."
+
+   "My goal is to source regeneratively grown grains from Montana. Right now, I use grains exclusively from Living Sky Grains, a Montana farm dedicated to regenerative agriculture. Regenerative agriculture is a farming approach that works with nature to rebuild healthy soil, conserve water, increase biodiversity, and produce nutrient-dense food."
+
+   "Baking with these grains is one small way I can support a healthier food system while helping connect people to where their food comes from. I love sharing what I’ve learned and helping educate others about something I’m passionate about."
+
+   "For Summer 2026, you’ll find me at the Gallatin Valley Farmers Market every Saturday from 9:00 a.m. to 12:00 p.m. I’ll post an update in September about what’s next."
+
+   "Thanks for visiting, and I hope you enjoy the bread!"])
+
 (defn nav-link [content route active?]
   [:button
    {:style {:background "none"
@@ -17,9 +32,28 @@
             :padding "0.25rem 0.5rem"
             :font-size "1rem"
             :cursor "pointer"
+            :color "inherit"
             :text-decoration (when active? "underline")}
     :disabled true ;; TODO: enable once additional pages have been implemented
     :on-click #(rf/dispatch [:navigate! {:name route}])}
+   content])
+
+(defn nav-anchor [content element-id current-page]
+  [:button
+   {:style {:background "none"
+            :border "none"
+            :padding "0.25rem 0.5rem"
+            :font-size "1rem"
+            :cursor "pointer"
+            :color "inherit"}
+    :on-click #(do
+                 (when (not= current-page :home-page)
+                   (rf/dispatch [:navigate! {:name :home-page}]))
+                 (js/setTimeout
+                  (fn []
+                    (when-let [el (js/document.getElementById element-id)]
+                      (.scrollIntoView el #js {:behavior "smooth"})))
+                  50))}
    content])
 
 (defn cart-icon []
@@ -65,14 +99,15 @@
                  :border "none"
                  :font-size "1.25rem"
                  :font-weight "bold"
-                 :cursor "pointer"}
+                 :cursor "pointer"
+                 :color "inherit"}
          :on-click #(rf/dispatch [:navigate! {:name :home-page}])}
         "The Last Best Loaf Bakery"]]
 
       ;; Links
       [:div
        ;; [nav-link "Menu" :menu (= current :menu)]
-       [nav-link "About" :about (= current :about)]
+       [nav-anchor "About" "about" current]
        ;; [nav-link "Contact" :contact (= current :contact)]
        ;; [nav-link
        ;;  [:<>
@@ -336,7 +371,28 @@
        "Place Order"]]]))
 
 (defn about []
-  [:div "Coming soon!!"])
+  (let [main-text (map (fn [text]
+                         [:p {:style {:font-size "1.1rem"
+                                      :line-height "1.8"
+                                      :color "#333"}} text]) about-text)]
+    [:div {:id "about"
+           :style {:padding "4rem 1rem"
+                   :background "#faf8f5"}}
+     [:div {:style {:max-width "800px"
+                    :margin "0 auto"}}
+      [:h2 {:style {:margin-bottom "1.5rem"
+                    :font-size "2rem"}} "About Us"]
+      [:img {:src "/images/farmers-market-full.jpg"
+             :alt "GVFM Day 1"
+             :style {:width "100%"
+                     :objectFit "cover"
+                     :border-radius "8px"}}]
+      main-text
+      [:img {:src "/images/farmers-market-empty.jpeg"
+             :alt "GVFM Day 1"
+             :style {:width "100%"
+                     :objectFit "cover"
+                     :border-radius "8px"}}]]]))
 
 (defn coming-soon []
   [:div "Coming soon!!"])
@@ -451,13 +507,14 @@
                    :paddingTop (str navbar-height "vh")}}
      [nav-bar]
      (if (= route :home-page)
-       [hero]
+       [:div {:style {:flex "1"}}
+        [hero]
+        [about]]
        [:div {:style {:flex "1"
                       :max-width "640px"
                       :margin "0 auto"
                       :padding "0 1rem"}}
         (case route
-          :about [about]
           :menu [coming-soon]
           :cart [cart]
           :checkout [checkout]
