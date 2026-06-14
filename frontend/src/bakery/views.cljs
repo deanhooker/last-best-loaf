@@ -371,11 +371,10 @@
        "Place Order"]]]))
 
 (defn about []
-  (let [p (fn [text]
-            [:p {:style {:font-size "1.1rem"
-                         :line-height "1.8"
-                         :color "#333"}}
-             text])]
+  (let [main-text (map (fn [text]
+                         [:p {:style {:font-size "1.1rem"
+                                      :line-height "1.8"
+                                      :color "#333"}} text]) about-text)]
     [:div {:id "about"
            :style {:padding "4rem 1rem"
                    :background "#faf8f5"}}
@@ -383,7 +382,17 @@
                     :margin "0 auto"}}
       [:h2 {:style {:margin-bottom "1.5rem"
                     :font-size "2rem"}} "About Us"]
-      (map (fn [s] [p s]) about-text)]]))
+      [:img {:src "/images/farmers-market-full.jpg"
+             :alt "GVFM Day 1"
+             :style {:width "100%"
+                     :objectFit "cover"
+                     :border-radius "8px"}}]
+      main-text
+      [:img {:src "/images/farmers-market-empty.jpeg"
+             :alt "GVFM Day 1"
+             :style {:width "100%"
+                     :objectFit "cover"
+                     :border-radius "8px"}}]]]))
 
 (defn coming-soon []
   [:div "Coming soon!!"])
