@@ -10,21 +10,6 @@
 (def footer-height 12)
 (def min-app-height (+ navbar-height hero-height footer-height))
 
-(def about-text
-  ["Hi, I'm Carolyn."
-
-   "I started making sourdough during a short hiatus from my work as a data scientist. Handcrafting individual loaves, watching them rise, and learning how they react to different environments felt deeply rewarding. Spending time away from the computer and working with my hands just felt right. Going back to basics."
-
-   "I care deeply about providing my community with food that is not only healthy, but truly delicious. Every loaf is naturally leavened with sourdough and made with thoughtfully sourced ingredients."
-
-   "My goal is to source regeneratively grown grains from Montana. Right now, I use grains exclusively from Living Sky Grains, a Montana farm dedicated to regenerative agriculture. Regenerative agriculture is a farming approach that works with nature to rebuild healthy soil, conserve water, increase biodiversity, and produce nutrient-dense food."
-
-   "Baking with these grains is one small way I can support a healthier food system while helping connect people to where their food comes from. I love sharing what I’ve learned and helping educate others about something I’m passionate about."
-
-   "For Summer 2026, you’ll find me at the Gallatin Valley Farmers Market every Saturday from 9:00 a.m. to 12:00 p.m. I’ll post an update in September about what’s next."
-
-   "Thanks for visiting, and I hope you enjoy the bread!"])
-
 (defn nav-link [content route active?]
   [:button
    {:style {:background "none"
@@ -371,28 +356,30 @@
        "Place Order"]]]))
 
 (defn about []
-  (let [main-text (map (fn [text]
-                         [:p {:style {:font-size "1.1rem"
-                                      :line-height "1.8"
-                                      :color "#333"}} text]) about-text)]
+  (let [p (fn [text]
+            [:p {:style {:font-size "1.1rem"
+                         :line-height "1.8"
+                         :color "#333"}} text])]
     [:div {:id "about"
            :style {:padding "4rem 1rem"
                    :background "#faf8f5"}}
      [:div {:style {:max-width "800px"
                     :margin "0 auto"}}
       [:h2 {:style {:margin-bottom "1.5rem"
-                    :font-size "2rem"}} "About Us"]
+                    :font-size "2rem"}} "About Me"]
       [:img {:src "/images/farmers-market-full.jpg"
              :alt "GVFM Day 1"
              :style {:width "100%"
                      :objectFit "cover"
                      :border-radius "8px"}}]
-      main-text
-      [:img {:src "/images/farmers-market-empty.jpeg"
-             :alt "GVFM Day 1"
-             :style {:width "100%"
-                     :objectFit "cover"
-                     :border-radius "8px"}}]]]))
+      [p "Hi, I'm Carolyn."]
+      [p "I started making sourdough during a short hiatus from my work as a data scientist. Handcrafting individual loaves, watching them rise, and learning how they react to different environments felt deeply rewarding. Instead of building predictive models, I found myself wanting to make something that directly served the people around me."]
+      [p "Today, I bake with the same curiosity that first drew me to math. The more I learned about grain, the more I realized that exceptional bread starts long before the dough is mixed. It begins with healthy soil, thoughtful farming, and grain grown with the future in mind."]
+      [p "Every loaf and baked good is naturally leavened with sourdough and made with thoughtfully sourced ingredients. I currently bake exclusively with grain from Living Sky Grains located in Three Forks, Montana—a farm using regenerative practices to rebuild soil and leave the land better than they found it. Healthier soils can produce more nutrient-dense crops while conserving water, supporting biodiversity, and strengthening the land for future generations."]
+      [p [:p "You can learn more about regenerative farming practices and Living Sky Grains " [:a {:href "https://regenified.com/farm/living-sky-grains/"} "here."]]]
+      [p "Choosing these grains is one small way I can support a healthier food system while helping reconnect people with where their food comes from. I love sharing what I've learned because I believe understanding our food is just as important as enjoying it."]
+      [p "For Summer 2026, you’ll find me at the Gallatin Valley Farmers Market every Saturday from 9:00 a.m. to 12:00 p.m. I’ll post an update in September about what’s next."]
+      [p "Thanks for visiting, and I hope you enjoy the bread."]]]))
 
 (defn coming-soon []
   [:div "Coming soon!!"])
